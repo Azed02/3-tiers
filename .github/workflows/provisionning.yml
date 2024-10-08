@@ -1,0 +1,54 @@
+name: CI-CD
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    terraform-apply:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+      
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: eu-west-3
+
+            - name: List directory contents
+              run: ls -a
+            - name: Set up terraform
+              uses: hashicorp/setup-terraform@v3
+              with: 
+                terraform_version: 1.5.0
+
+            - name: Initialize terraform
+              run: terraform  init
+              working-directory: resources
+
+            - name: Format the file
+              run: terraform fmt
+              working-directory: resources
+
+            - name: Check the syntax
+              run: terraform validate
+              working-directory: resources
+
+            - name: Plan the execution 
+              run: terraform plan
+              working-directory: resources
+
+            - name: Apply the changes
+              run: terraform apply -auto-approve
+              working-directory: resources
+            
+            - name: Destroy terraform
+              run: terraform destroy -auto-approve
+              working-directory: resources
+
+
+       
