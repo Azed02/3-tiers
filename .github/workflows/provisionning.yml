@@ -39,16 +39,16 @@ jobs:
               working-directory: resources
 
             - name: Plan the execution 
-              run: terraform plan
+              run: terraform plan -var-file=secret.tfvars -out=tfplan
               working-directory: resources
 
             - name: Apply the changes
-              run: terraform apply -auto-approve
+              run: terraform apply -auto-approve tfplan
               working-directory: resources
             
-            - name: Destroy terraform
-              run: terraform destroy -auto-approve
-              working-directory: resources
+            # - name: Destroy terraform
+            #   run: terraform destroy -auto-approve
+            #   working-directory: resources
 
 
        
