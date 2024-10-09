@@ -6,7 +6,6 @@ resource "aws_launch_template" "web-lt" {
     user_data = filebase64("user_data.sh")
 
     network_interfaces {
-    associate_public_ip_address = true
     device_index    = 0
     security_groups  = [aws_security_group.web-asg-sg.id]
   }

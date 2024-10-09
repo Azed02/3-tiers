@@ -11,6 +11,13 @@ resource "aws_security_group" "web-asg-sg" {
         security_groups = [aws_security_group.lb-web-sg.id]
     }
 
+        ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    security_groups = [aws_security_group.lb-web-sg.id]
+    }
+
     ingress {
     from_port   = 22
     to_port     = 22
